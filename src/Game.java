@@ -24,7 +24,13 @@ public class Game {
 
     public void start() {
         spawnSquare();
+        printBoard();
         spawnSquare();
+        printBoard();
+        spawnSquare();
+        printBoard();
+        moveUp();
+        printBoard();
     }
     
     public void spawnSquare() {
@@ -47,6 +53,38 @@ public class Game {
 
         // 90% chance to spawn a 2 (2^1 == 2); 10% chance to spawn a 4 (2^2 == 4);
         board[row][column] = (rand.nextDouble() <= 0.9) ? 1 : 2; 
+    }
+
+    public void setSquare(int row, int col, int val) {
+        board[row][col] = val;
+    }
+
+    public boolean moveUp() {
+        // Loop through every square
+        for(int i = 1; i < numOfRows; i ++) {
+            for(int k = 0; k < numOfColumns; k ++) {
+                //If the current square isnt 0
+                if(board[i][k] != 0) {
+                    int temp = i;
+                    // Keep moving the square up
+                    while(temp > 0) {
+                        if(board[temp-1][k] == 0) {
+                            board[temp-1][k] = board[temp][k];
+                            board[temp][k] = 0;
+                            continue;
+                        }
+                        if(board[temp-1][k] == board[temp][k]) {
+                            board[temp-1][k] = board[temp][k] + 1;
+                            board[temp][k] = 0;
+                            // You cant merge twice
+                            break;
+                        }
+                        temp--;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     public void printBoard() {
